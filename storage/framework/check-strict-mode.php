@@ -21,10 +21,10 @@ echo 'STRICT_TRANS_TABLES: ', str_contains($mode, 'STRICT_TRANS_TABLES') ? 'ON' 
 
 // A 300-character value into a column that is still varchar(191) must throw
 // now, not quietly shorten. `media`.`altText` was widened, so use a column that
-// was deliberately left alone: `user`.`name`.
+// was deliberately left alone: `users`.`name`.
 try {
     Illuminate\Support\Facades\DB::transaction(function () {
-        Illuminate\Support\Facades\DB::table('user')->insert([
+        Illuminate\Support\Facades\DB::table('users')->insert([
             'id' => 'strict-mode-probe',
             'name' => str_repeat('x', 300),
             'email' => 'strict-probe@example.test',
@@ -34,7 +34,7 @@ try {
         ]);
     });
 
-    $length = Illuminate\Support\Facades\DB::table('user')
+    $length = Illuminate\Support\Facades\DB::table('users')
         ->where('id', 'strict-mode-probe')->value('name');
 
     echo 'PROBLEM: insert succeeded, stored ', mb_strlen((string) $length), ' of 300 chars', PHP_EOL;
@@ -49,5 +49,5 @@ try {
         echo 'PROBE BROKEN (not a length error): ', $message, PHP_EOL;
     }
 } finally {
-    Illuminate\Support\Facades\DB::table('user')->where('id', 'strict-mode-probe')->delete();
+    Illuminate\Support\Facades\DB::table('users')->where('id', 'strict-mode-probe')->delete();
 }

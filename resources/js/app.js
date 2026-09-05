@@ -241,23 +241,34 @@ function initNavbar() {
 
     const toggle = header.querySelector('[data-nav-toggle]');
 
+    /*
+     * The open flag goes on <html> rather than on the header. The panel and the
+     * backdrop are siblings of the header now - navbar.blade.php explains why
+     * they cannot stay inside it - while the hamburger bars they sit beside are
+     * still within it, so the header is no longer an ancestor of everything the
+     * stylesheet has to reach.
+     */
+    const root = document.documentElement;
+
     const setOpen = (open) => {
-        header.dataset.navOpen = open ? 'true' : 'false';
+        root.dataset.navOpen = open ? 'true' : 'false';
         toggle?.setAttribute('aria-expanded', open ? 'true' : 'false');
         // The React version locked the body the same way; without it the page
         // behind the panel keeps scrolling and the backdrop slides away.
         document.body.style.overflow = open ? 'hidden' : '';
     };
 
-    toggle?.addEventListener('click', () => setOpen(header.dataset.navOpen !== 'true'));
+    toggle?.addEventListener('click', () => setOpen(root.dataset.navOpen !== 'true'));
 
-    header.querySelectorAll('[data-nav-close]').forEach((node) => {
+    // Two ways to dismiss: the backdrop, and the cross inside the panel. Neither
+    // is a descendant of the header any more, so both are found off the document.
+    document.querySelectorAll('[data-nav-close]').forEach((node) => {
         node.addEventListener('click', () => setOpen(false));
     });
 
     // Choosing a destination has to unlock the body, which a full page load
     // would do anyway but an in-page anchor would not.
-    header.querySelectorAll('.nav-mobile-panel a').forEach((link) => {
+    document.querySelectorAll('.nav-mobile-panel a').forEach((link) => {
         link.addEventListener('click', () => setOpen(false));
     });
 
@@ -330,11 +341,22 @@ function initDropdowns() {
             closeAll();
         }
     });
+}
 
-    /*
-     * Mobile accordions are separate: they expand in place rather than floating,
-     * so several may be open at once and clicking elsewhere must not close them.
-     */
+/* ── Mobile accordions ─────────────────────────────────────────────────────── */
+
+/**
+ * The groups inside the slide-in panel. They expand in place rather than
+ * floating, so several may be open at once and a click elsewhere must not close
+ * them - which is why this is not part of initDropdowns().
+ *
+ * It used to be, at the far side of that function's "no dropdown toggles here"
+ * early return. Nothing on a page with a navbar trips that guard today, but the
+ * panel now renders its groups open and relies on this to fold them away again,
+ * so an accordion that only works when a desktop dropdown happens to exist is a
+ * coupling worth removing rather than leaving one refactor away from breaking.
+ */
+function initMobileAccordions() {
     document.querySelectorAll('[data-accordion-toggle]').forEach((node) => {
         node.addEventListener('click', () => {
             const wrapper = node.parentElement;
@@ -412,5 +434,6 @@ initCounters();
 initHeroSlider();
 initNavbar();
 initDropdowns();
+initMobileAccordions();
 initAdminSidebar();
 initSubmitGuards();

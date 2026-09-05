@@ -30,18 +30,8 @@ use Illuminate\View\View;
 class HomeController extends Controller
 {
     /**
-     * PLACEHOLDER_STATS from page.tsx. Shown when the impactstat table is empty,
-     * so a fresh install still has a credible numbers band. `labelFallback` is
-     * what tl(label, locale, fallback) fell back to for these rows.
+     * PLACEHOLDER_PROGRAMS from page.tsx.
      */
-    private const PLACEHOLDER_STATS = [
-        ['id' => 's1', 'value' => 12400, 'suffix' => '+', 'label' => 'Students Reached'],
-        ['id' => 's2', 'value' => 86, 'suffix' => '', 'label' => 'Schools Supported'],
-        ['id' => 's3', 'value' => 340, 'suffix' => '+', 'label' => 'Volunteers Engaged'],
-        ['id' => 's4', 'value' => 9, 'suffix' => '', 'label' => 'Regions Active'],
-    ];
-
-    /** PLACEHOLDER_PROGRAMS from page.tsx. */
     private const PLACEHOLDER_PROGRAMS = [
         ['title' => 'Foundational Literacy', 'summary' => 'Early-grade reading and numeracy support in underserved schools.', 'icon' => '📚'],
         ['title' => "Girls' Education Access", 'summary' => 'Removing barriers that keep girls out of the classroom.', 'icon' => '🎓'],
@@ -126,6 +116,8 @@ class HomeController extends Controller
              * findMany({ orderBy: { order: 'asc' } }) with no `where` at all, so
              * an inactive stat still counted on the homepage. Preserved as-is so
              * the port renders the same numbers as the site it replaces.
+             * ImpactController, which has no original to stay faithful to, does
+             * filter on it.
              */
             'impactStats' => ImpactStat::query()->orderBy('order')->get()
                 ->map(fn ($s) => [
@@ -134,7 +126,7 @@ class HomeController extends Controller
                     'suffix' => (string) ($s->suffix ?? ''),
                     'label' => $s->text('label'),
                 ])
-                ->all() ?: self::PLACEHOLDER_STATS,
+                ->all() ?: ImpactStat::FALLBACK_ROWS,
 
             'landing' => $landing,
 

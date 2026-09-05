@@ -356,7 +356,7 @@ class UserManager extends Component
     }
 
     /**
-     * True when the change about to be made would leave the `user` table with no
+     * True when the change about to be made would leave the `users` table with no
      * SUPER_ADMIN at all.
      *
      * $newRole is null for a delete. Counting only after excluding the user being

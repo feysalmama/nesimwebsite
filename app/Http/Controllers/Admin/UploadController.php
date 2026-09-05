@@ -22,9 +22,13 @@ use Illuminate\Support\Str;
  * go stale.
  *
  * Files are written directly to public/uploads rather than through the "public"
- * disk (which resolves to storage/app/public). That directory is a junction onto
- * the Next.js app's public/uploads, so both stacks read and write one shared
- * folder and an image uploaded from either admin shows up in the other.
+ * disk (which resolves to storage/app/public), because that is where every
+ * existing Media row's url already points.
+ *
+ * That directory used to be a junction onto the Next.js app's public/uploads so
+ * both stacks shared one folder. It is a real directory now, holding its own
+ * verified copy of the same 71 files - see storage/framework/adopt-uploads.ps1 -
+ * so this app no longer reaches outside itself for its images.
  */
 class UploadController extends Controller
 {
@@ -75,9 +79,9 @@ class UploadController extends Controller
         /*
          * The name is generated here, never taken from the client, so the only
          * way it could escape the directory is a bug above. basename() is the
-         * check that catches one — deliberately not a realpath() prefix test,
-         * because public/uploads is a junction and realpath() resolves it to the
-         * Next.js app's folder, which would then reject every legitimate upload.
+         * check that catches one: a name that survives the round trip holds no
+         * path separator and no leading dot, so move() can only place it inside
+         * $directory.
          */
         if (basename($filename) !== $filename) {
             return response()->json(['error' => 'Invalid filename'], 400);

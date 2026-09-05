@@ -9,6 +9,7 @@ use App\Livewire\Admin\SingletonEditor;
 use App\Livewire\Admin\SubmissionManager;
 use App\Livewire\Admin\UserManager;
 use App\Models\AboutContent;
+use App\Models\ActivityLog;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\GlobalSettings;
@@ -21,6 +22,7 @@ use App\Models\User;
 use App\Models\VolunteerApplication;
 use App\Support\AdminNav;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -644,6 +646,54 @@ class AdminPanelTest extends TestCase
     }
 
     /* ── Staff Users ──────────────────────────────────────────────────────── */
+
+    /**
+     * `users` is derived from the class name rather than declared, because
+     * Laravel's default for a model called User is exactly that and User
+     * therefore carries no $table. The table was `user`, singular, inherited from
+     * the Prisma schema it was ported from, and has since been renamed.
+     *
+     * Deriving is the convention, but it fails silently: renaming the class, or
+     * re-adding an override, would repoint sign-in, UserManager's unique-email
+     * rule and three foreign keys at a table that is not there, and nothing would
+     * complain until an administrator was locked out. Hence pinned here.
+     */
+    public function test_the_user_model_sits_on_the_conventional_users_table(): void
+    {
+        $this->assertSame('users', (new User)->getTable());
+        $this->assertTrue(Schema::hasTable('users'));
+        $this->assertFalse(
+            Schema::hasTable('user'),
+            'the old singular name should be gone, not left behind as a second copy',
+        );
+
+        /*
+         * activitylog.userId, media.uploadedBy and blogpost.authorId are real
+         * InnoDB foreign keys onto this table, so belongsTo is the direction
+         * worth reading: it is the only one of the two that names the parent
+         * table in its SQL. A hasMany binds the parent key as a value and would
+         * quietly return nothing if the name went stale.
+         */
+        $author = $this->staff();
+
+        $log = ActivityLog::query()->create([
+            'userId' => $author->getKey(),
+            'action' => 'zz-probe',
+            'entity' => 'Zz',
+        ]);
+
+        $upload = Media::query()->create([
+            'url' => '/uploads/zz-probe.png',
+            'uploadedBy' => $author->getKey(),
+        ]);
+
+        $this->assertSame($author->email, $log->user->email);
+        $this->assertSame($author->email, $upload->uploader->email);
+
+        // A post needs a title, a slug and body copy to be worth writing, so
+        // the third key is checked as the query it would run instead of a row.
+        $this->assertStringContainsString('`users`', (new BlogPost)->author()->getQuery()->toSql());
+    }
 
     public function test_user_manager_creates_a_staff_account_with_a_hashed_password(): void
     {

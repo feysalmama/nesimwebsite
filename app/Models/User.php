@@ -7,11 +7,20 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * Maps onto the existing `user` table written by Prisma.
+ * The staff account. Table is `users` - Laravel's default for a model called
+ * User, so there is no $table override here. It was `user`, singular, because
+ * Prisma derived the name from the model; the table has since been renamed to
+ * match the convention and the three InnoDB foreign keys that pointed at it
+ * (activitylog.userId, blogpost.authorId, media.uploadedBy) followed.
+ *
+ * The columns are still the ones Prisma created, so three things stay
+ * unconventional:
  *
  * The password column is `passwordHash` (bcryptjs, $2a$ prefix, cost 10) rather
  * than Laravel's conventional `password`, so getAuthPassword() is overridden and
  * verification goes through verifyPassword() below — not Hash::check() directly.
+ *
+ * Timestamps are `createdAt` only, hence the CREATED_AT/UPDATED_AT constants.
  *
  * There is no remember_token column, so $rememberTokenName is nulled out to
  * stop Laravel looking for one.
@@ -38,8 +47,6 @@ class User extends Authenticatable
     public const ROLE_VIEWER = 'VIEWER';
 
     public $incrementing = false;
-
-    protected $table = 'user';
 
     protected $keyType = 'string';
 

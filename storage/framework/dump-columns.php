@@ -5,7 +5,7 @@ $pdo = new PDO('mysql:host=127.0.0.1;dbname=nesim;charset=utf8mb4', 'root', '', 
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 ]);
 
-$tables = ['aboutcontent', 'landingcontent', 'presidentmessage', 'globalsettings', 'media', 'activitylog', 'user'];
+$tables = ['aboutcontent', 'landingcontent', 'presidentmessage', 'globalsettings', 'media', 'activitylog', 'users'];
 
 foreach ($tables as $table) {
     echo str_repeat('=', 20), ' ', $table, PHP_EOL;

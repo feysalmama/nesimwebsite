@@ -1,5 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+{{--
+    data-nav-open is declared here rather than on the header because the mobile
+    panel is a sibling of the header, not a child of it; partials/navbar.blade.php
+    explains why. app.css keys the open state on html[data-nav-open='true'], and
+    app.js flips it. Absent would read as closed too, but stating it keeps the
+    flag's initial value visible in the markup the way it was before.
+--}}
+<html lang="{{ app()->getLocale() }}" data-nav-open="false">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +25,14 @@
             ?: ($settings->seoDescription
                 ?: ($settings->tagline
                     ?: 'Empowering communities through education, sustainable development, and humanitarian aid.'));
+
+        /*
+         * An optional per-page image. The five detail pages each set
+         * openGraph.images to their own cover in the Next.js app, and everything
+         * else fell through to the logo; url() passes an already-absolute URL
+         * straight back, so a stored /uploads/... path and a full one both work.
+         */
+        $image = trim($__env->yieldContent('image')) ?: $settings->logoOrDefault();
     @endphp
     <title>{{ $fullTitle }}</title>
     <meta name="description" content="{{ $description }}">
@@ -26,7 +41,7 @@
     <meta property="og:site_name" content="{{ $orgName }}">
     <meta property="og:title" content="{{ $fullTitle }}">
     <meta property="og:description" content="{{ $description }}">
-    <meta property="og:image" content="{{ url($settings->logoOrDefault()) }}">
+    <meta property="og:image" content="{{ url($image) }}">
     <meta name="twitter:card" content="summary_large_image">
 
     <link rel="icon" type="image/png" href="{{ $settings->faviconUrl ?: '/favicon.png' }}">

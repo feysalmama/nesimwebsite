@@ -1,0 +1,271 @@
+﻿========================================================================
+program
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  title                  text               NOT NULL  [REQUIRED]
+  summary                text               NOT NULL  [REQUIRED]
+  body                   text               NOT NULL  [REQUIRED]
+  icon                   varchar(191)       null    
+  imageUrl               varchar(191)       null    
+  published              tinyint(1)         NOT NULL  [default=1]
+  order                  int(11)            NOT NULL  [default=0]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+  updatedAt              datetime(3)        NOT NULL  [REQUIRED]
+========================================================================
+service
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  title                  text               NOT NULL  [REQUIRED]
+  slug                   varchar(191)       NOT NULL  [REQUIRED]
+  summary                text               NOT NULL  [REQUIRED]
+  body                   text               NOT NULL  [REQUIRED]
+  imageUrl               varchar(191)       null    
+  icon                   varchar(191)       null    
+  featured               tinyint(1)         NOT NULL  [default=0]
+  published              tinyint(1)         NOT NULL  [default=1]
+  order                  int(11)            NOT NULL  [default=0]
+  seoTitle               text               null    
+  seoDescription         text               null    
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+  updatedAt              datetime(3)        NOT NULL  [REQUIRED]
+========================================================================
+project
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  title                  text               NOT NULL  [REQUIRED]
+  slug                   varchar(191)       null    
+  summary                text               NOT NULL  [REQUIRED]
+  body                   text               NOT NULL  [REQUIRED]
+  location               varchar(191)       null    
+  status                 varchar(191)       NOT NULL  [default=ongoing]
+  imageUrl               varchar(191)       null    
+  categoryId             varchar(191)       null    
+  startDate              datetime(3)        null    
+  endDate                datetime(3)        null    
+  published              tinyint(1)         NOT NULL  [default=1]
+  featured               tinyint(1)         NOT NULL  [default=0]
+  order                  int(11)            NOT NULL  [default=0]
+  seoTitle               text               null    
+  seoDescription         text               null    
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+  updatedAt              datetime(3)        NOT NULL  [REQUIRED]
+========================================================================
+projectimage
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  projectId              varchar(191)       NOT NULL  [REQUIRED]
+  imageUrl               varchar(191)       NOT NULL  [REQUIRED]
+  altText                text               null    
+  order                  int(11)            NOT NULL  [default=0]
+========================================================================
+newspost
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  title                  text               NOT NULL  [REQUIRED]
+  slug                   varchar(191)       null    
+  excerpt                text               NOT NULL  [REQUIRED]
+  body                   text               NOT NULL  [REQUIRED]
+  coverUrl               varchar(191)       null    
+  category               varchar(191)       NOT NULL  [default=news]
+  newsCategoryId         varchar(191)       null    
+  author                 varchar(191)       null    
+  published              tinyint(1)         NOT NULL  [default=1]
+  featured               tinyint(1)         NOT NULL  [default=0]
+  publishedAt            datetime(3)        NOT NULL  [default=current_timestamp(3)]
+  seoTitle               text               null    
+  seoDescription         text               null    
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+  updatedAt              datetime(3)        NOT NULL  [REQUIRED]
+========================================================================
+blogpost
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  title                  text               NOT NULL  [REQUIRED]
+  slug                   varchar(191)       NOT NULL  [REQUIRED]
+  excerpt                text               NOT NULL  [REQUIRED]
+  body                   text               NOT NULL  [REQUIRED]
+  coverUrl               varchar(191)       null    
+  authorId               varchar(191)       null    
+  categoryId             varchar(191)       null    
+  published              tinyint(1)         NOT NULL  [default=0]
+  featured               tinyint(1)         NOT NULL  [default=0]
+  publishedAt            datetime(3)        null    
+  seoTitle               text               null    
+  seoDescription         text               null    
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+  updatedAt              datetime(3)        NOT NULL  [REQUIRED]
+========================================================================
+gallery
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  title                  text               NOT NULL  [REQUIRED]
+  description            text               null    
+  coverImage             varchar(191)       null    
+  eventDate              datetime(3)        null    
+  published              tinyint(1)         NOT NULL  [default=1]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+========================================================================
+galleryimage
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  galleryId              varchar(191)       NOT NULL  [REQUIRED]
+  imageUrl               varchar(191)       NOT NULL  [REQUIRED]
+  altText                text               null    
+  order                  int(11)            NOT NULL  [default=0]
+========================================================================
+resource
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  title                  text               NOT NULL  [REQUIRED]
+  description            text               null    
+  categoryId             varchar(191)       null    
+  fileUrl                varchar(191)       NOT NULL  [REQUIRED]
+  coverImage             varchar(191)       null    
+  fileType               varchar(191)       null    
+  published              tinyint(1)         NOT NULL  [default=1]
+  publishedAt            datetime(3)        null    
+  downloadCount          int(11)            NOT NULL  [default=0]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+========================================================================
+testimonial
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  name                   varchar(191)       NOT NULL  [REQUIRED]
+  role                   text               null    
+  quote                  text               NOT NULL  [REQUIRED]
+  photoUrl               varchar(191)       null    
+  rating                 int(11)            null    
+  published              tinyint(1)         NOT NULL  [default=1]
+  order                  int(11)            NOT NULL  [default=0]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+========================================================================
+teammember
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  name                   varchar(191)       NOT NULL  [REQUIRED]
+  role                   text               NOT NULL  [REQUIRED]
+  photoUrl               varchar(191)       null    
+  bio                    text               null    
+  isLeader               tinyint(1)         NOT NULL  [default=0]
+  order                  int(11)            NOT NULL  [default=0]
+  published              tinyint(1)         NOT NULL  [default=1]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+========================================================================
+faqitem
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  question               text               NOT NULL  [REQUIRED]
+  answer                 text               NOT NULL  [REQUIRED]
+  order                  int(11)            NOT NULL  [default=0]
+  published              tinyint(1)         NOT NULL  [default=1]
+========================================================================
+membershipcategory
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  name                   text               NOT NULL  [REQUIRED]
+  description            text               null    
+  requirements           text               null    
+  benefits               text               null    
+  published              tinyint(1)         NOT NULL  [default=1]
+  order                  int(11)            NOT NULL  [default=0]
+========================================================================
+impactstat
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  label                  text               NOT NULL  [REQUIRED]
+  value                  int(11)            NOT NULL  [REQUIRED]
+  suffix                 varchar(191)       null    
+  prefix                 varchar(191)       null    
+  icon                   varchar(191)       null    
+  description            text               null    
+  order                  int(11)            NOT NULL  [default=0]
+  active                 tinyint(1)         NOT NULL  [default=1]
+========================================================================
+presidentmessage
+  id                     varchar(191)       NOT NULL  [default=president-message]
+  photoUrl               varchar(191)       null    
+  name                   varchar(191)       NOT NULL  [REQUIRED]
+  position               text               NOT NULL  [REQUIRED]
+  message                text               NOT NULL  [REQUIRED]
+  signatureUrl           varchar(191)       null    
+  updatedAt              datetime(3)        NOT NULL  [REQUIRED]
+========================================================================
+contactmessage
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  name                   varchar(191)       NOT NULL  [REQUIRED]
+  email                  varchar(191)       NOT NULL  [REQUIRED]
+  phone                  varchar(191)       null    
+  subject                text               null    
+  message                text               NOT NULL  [REQUIRED]
+  status                 varchar(191)       NOT NULL  [default=new]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+========================================================================
+donationintent
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  name                   varchar(191)       NOT NULL  [REQUIRED]
+  email                  varchar(191)       NOT NULL  [REQUIRED]
+  phone                  varchar(191)       null    
+  amount                 int(11)            NOT NULL  [REQUIRED]
+  currency               varchar(191)       NOT NULL  [default=ETB]
+  method                 varchar(191)       null    
+  status                 varchar(191)       NOT NULL  [default=pending]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+========================================================================
+volunteerapplication
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  name                   varchar(191)       NOT NULL  [REQUIRED]
+  email                  varchar(191)       NOT NULL  [REQUIRED]
+  phone                  varchar(191)       NOT NULL  [REQUIRED]
+  city                   varchar(191)       null    
+  skills                 text               null    
+  message                text               null    
+  status                 varchar(191)       NOT NULL  [default=new]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+========================================================================
+registrationsubmission
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  fullName               varchar(191)       NOT NULL  [REQUIRED]
+  email                  varchar(191)       NOT NULL  [REQUIRED]
+  phone                  varchar(191)       NOT NULL  [REQUIRED]
+  program                varchar(191)       null    
+  city                   varchar(191)       null    
+  notes                  text               null    
+  status                 varchar(191)       NOT NULL  [default=new]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+========================================================================
+membershipapplication
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  firstName              varchar(191)       NOT NULL  [REQUIRED]
+  lastName               varchar(191)       NOT NULL  [REQUIRED]
+  email                  varchar(191)       NOT NULL  [REQUIRED]
+  phone                  varchar(191)       NOT NULL  [REQUIRED]
+  dob                    datetime(3)        null    
+  gender                 varchar(191)       null    
+  address                text               null    
+  city                   varchar(191)       null    
+  occupation             varchar(191)       null    
+  categoryId             varchar(191)       null    
+  motivation             text               null    
+  documents              text               null    
+  status                 varchar(191)       NOT NULL  [default=new]
+  createdAt              datetime(3)        NOT NULL  [default=current_timestamp(3)]
+  updatedAt              datetime(3)        NOT NULL  [REQUIRED]
+========================================================================
+tag
+  id                     varchar(191)       NOT NULL  [REQUIRED]
+  name                   text               NOT NULL  [REQUIRED]
+  slug                   varchar(191)       NOT NULL  [REQUIRED]
+========================================================================
+_blogposttotag
+  A                      varchar(191)       NOT NULL  [REQUIRED]
+  B                      varchar(191)       NOT NULL  [REQUIRED]
+========================================================================
+row counts
+  program                  3
+  service                  3
+  project                  2
+  projectimage             0
+  newspost                 2
+  blogpost                 3
+  gallery                  2
+  galleryimage             5
+  resource                 2
+  testimonial              2
+  teammember               5
+  faqitem                  3
+  membershipcategory       3
+  impactstat               4
+  presidentmessage         1
+  contactmessage           0
+  donationintent           0
+  volunteerapplication     0
+  registrationsubmission   0
+  membershipapplication    0
+  tag                      3
+  _blogposttotag           0

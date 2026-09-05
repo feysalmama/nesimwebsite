@@ -186,17 +186,41 @@ html[lang='am'] body {
     transform: rotate(180deg);
 }
 
-/* Mobile accordion bodies in the slide-in panel. */
+/*
+ * Mobile accordion bodies in the slide-in panel. They start open - see the
+ * .is-open wrapper navbar.blade.php renders - so the hamburger reaches every
+ * destination in one tap.
+ *
+ * grid-template-rows rather than the max-height cap the React version used
+ * (max-h-80). A cap silently clips whatever exceeds it, and the height needed
+ * here is not a constant: the panel is 280px wide, and the Amharic and Afaan
+ * Oromoo labels wrap onto two lines where the English ones fit on one. 0fr to 1fr
+ * animates to the real content height, so a longer translation cannot push a
+ * destination off the bottom of its group.
+ *
+ * visibility as well as opacity, because a collapsed body stays in the tab order:
+ * without it a keyboard visitor tabs through links they cannot see. visibility
+ * transitions discretely, which gives the wanted asymmetry - shown immediately,
+ * hidden only once the collapse has finished.
+ */
 .nav-accordion {
-    max-height: 0;
+    display: grid;
+    grid-template-rows: 0fr;
     opacity: 0;
+    visibility: hidden;
+    transition: grid-template-rows 0.2s ease, opacity 0.2s ease, visibility 0.2s;
+}
+
+/* A 0fr row only collapses to nothing if its content may shrink below its own. */
+.nav-accordion > * {
+    min-height: 0;
     overflow: hidden;
-    transition: max-height 0.2s ease, opacity 0.2s ease;
 }
 
 .is-open > .nav-accordion {
-    max-height: 20rem;
+    grid-template-rows: 1fr;
     opacity: 1;
+    visibility: visible;
 }
 
 /*
@@ -207,6 +231,13 @@ html[lang='am'] body {
  * scrolled and open values are only ever produced by JavaScript at runtime, and
  * a class that appears nowhere in the scanned sources is a class Tailwind never
  * generates.
+ *
+ * The two flags sit on different elements. data-nav-scrolled belongs to the
+ * header because every rule it drives styles the header itself. data-nav-open
+ * goes on <html> because the panel and backdrop it shows are siblings of the
+ * header, not descendants - see the note in partials/navbar.blade.php for why
+ * they cannot live inside it - while the hamburger bars it animates are still
+ * within it. Only a common ancestor reaches both.
  */
 header[data-nav-scrolled='true'] {
     border-bottom-color: rgb(46 139 79 / 0.1);
@@ -226,11 +257,11 @@ header[data-nav-scrolled='true'] {
     transition: opacity 0.3s ease;
 }
 
-header[data-nav-open='true'] .nav-mobile-panel {
+html[data-nav-open='true'] .nav-mobile-panel {
     transform: none;
 }
 
-header[data-nav-open='true'] .nav-mobile-backdrop {
+html[data-nav-open='true'] .nav-mobile-backdrop {
     opacity: 1;
     pointer-events: auto;
 }
@@ -240,16 +271,16 @@ header[data-nav-open='true'] .nav-mobile-backdrop {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-header[data-nav-open='true'] .nav-bar-1 {
+html[data-nav-open='true'] .nav-bar-1 {
     transform: translateY(7px) rotate(45deg);
 }
 
-header[data-nav-open='true'] .nav-bar-2 {
+html[data-nav-open='true'] .nav-bar-2 {
     transform: scaleX(0);
     opacity: 0;
 }
 
-header[data-nav-open='true'] .nav-bar-3 {
+html[data-nav-open='true'] .nav-bar-3 {
     transform: translateY(-7px) rotate(-45deg);
 }
 
