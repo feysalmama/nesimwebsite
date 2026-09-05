@@ -1,0 +1,208 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "programs": "Programs",
+    "projects": "Projects",
+    "impact": "Impact",
+    "volunteer": "Volunteer",
+    "testimonials": "Testimonials",
+    "news": "News & Media",
+    "insights": "Insights",
+    "faq": "FAQ",
+    "contact": "Contact Us",
+    "register": "Registration",
+    "donate": "Donate",
+    "services": "Services",
+    "blog": "Blog",
+    "gallery": "Gallery",
+    "resources": "Resources",
+    "membership": "Membership",
+    "leadership": "Leadership",
+    "media": "Media",
+    "getInvolved": "Get Involved",
+    "programsGroup": "Programs",
+    "overview": "Overview"
+  },
+  "hero": {
+    "eyebrow": "Nesim Education and Development Organization",
+    "title": "Growing minds, rooting change",
+    "subtitle": "We plant the tools for learning and let communities across Ethiopia grow their own future — through education, opportunity, and lasting development.",
+    "ctaPrimary": "Donate Now",
+    "ctaSecondary": "See Our Programs"
+  },
+  "impact": {
+    "eyebrow": "Our Measurable Impact",
+    "title": "Change we can count",
+    "subtitle": "Every number is a person, a classroom, a community moving forward."
+  },
+  "programs": {
+    "eyebrow": "What We Do",
+    "title": "Our Programs",
+    "subtitle": "Focused initiatives designed around what communities tell us they need most."
+  },
+  "projects": {
+    "eyebrow": "On the Ground",
+    "title": "Our Projects",
+    "subtitle": "Active and completed work across the regions we serve.",
+    "status": {
+      "ongoing": "Ongoing",
+      "completed": "Completed"
+    }
+  },
+  "about": {
+    "eyebrow": "Who We Are",
+    "title": "About Nesim",
+    "mission": "Our Mission",
+    "vision": "Our Vision",
+    "values": "Our Values",
+    "team": "Our Team"
+  },
+  "testimonials": {
+    "eyebrow": "Voices",
+    "title": "Testimonials",
+    "subtitle": "Stories from the people and communities we work alongside."
+  },
+  "volunteer": {
+    "eyebrow": "Join Us",
+    "title": "Volunteer With Nesim",
+    "subtitle": "Bring your time and skills to a cause that grows with every hand.",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone number",
+      "city": "City",
+      "skills": "Skills / Areas of interest",
+      "message": "Tell us why you'd like to volunteer",
+      "submit": "Submit Application",
+      "success": "Thank you — we'll be in touch soon."
+    }
+  },
+  "news": {
+    "eyebrow": "Stay Updated",
+    "title": "News & Media",
+    "subtitle": "Announcements, coverage, and stories from the field."
+  },
+  "insights": {
+    "eyebrow": "Learn With Us",
+    "title": "Insights",
+    "subtitle": "Reflections, research, and lessons from our work."
+  },
+  "faq": {
+    "eyebrow": "Questions",
+    "title": "Frequently Asked Questions"
+  },
+  "contact": {
+    "eyebrow": "Get In Touch",
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you.",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send Message",
+      "success": "Message sent — thank you for reaching out."
+    },
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "register": {
+    "eyebrow": "Get Involved",
+    "title": "Registration",
+    "subtitle": "Register for a program, event, or membership.",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone number",
+      "program": "Program of interest",
+      "city": "City",
+      "notes": "Additional notes",
+      "submit": "Submit Registration",
+      "success": "You're registered — we'll follow up soon."
+    }
+  },
+  "donate": {
+    "eyebrow": "Support Our Work",
+    "title": "Donate",
+    "subtitle": "Your contribution roots real change in classrooms and communities.",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone number",
+      "amount": "Amount (ETB)",
+      "method": "Payment method",
+      "submit": "Continue to Donate",
+      "success": "Thank you for your generosity — our team will confirm shortly."
+    }
+  },
+  "services": {
+    "eyebrow": "How We Help",
+    "title": "Our Services",
+    "subtitle": "Practical support for communities, organizations, and individuals."
+  },
+  "blog": {
+    "eyebrow": "Stories & Insights",
+    "title": "Blog",
+    "subtitle": "Perspectives, field stories, and reflections from our team."
+  },
+  "gallery": {
+    "eyebrow": "Moments",
+    "title": "Photo Gallery",
+    "subtitle": "Visual stories from our programs and events."
+  },
+  "resources": {
+    "eyebrow": "Documents",
+    "title": "Resources",
+    "subtitle": "Reports, guides, and publications available for download.",
+    "download": "Download"
+  },
+  "membership": {
+    "eyebrow": "Join Us",
+    "title": "Membership",
+    "subtitle": "Become part of the Nesim community and help us grow.",
+    "benefits": "Benefits",
+    "requirements": "Requirements",
+    "applyTitle": "Apply for Membership",
+    "applySubtitle": "Fill out the form below and our team will review your application.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone number",
+    "dob": "Date of birth",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "address": "Address",
+    "city": "City",
+    "occupation": "Occupation",
+    "category": "Membership category",
+    "motivation": "Why do you want to join?",
+    "selectOption": "Select an option",
+    "submit": "Submit Application",
+    "success": "Application submitted — we'll be in touch soon."
+  },
+  "leadership": {
+    "eyebrow": "Our People",
+    "title": "Leadership & Team",
+    "subtitle": "The people guiding Nesim's mission and doing the work every day.",
+    "leaders": "Leadership",
+    "team": "Team"
+  },
+  "footer": {
+    "tagline": "Education and Development Organization",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "follow": "Follow Us",
+    "rights": "All rights reserved.",
+    "explore": "Explore",
+    "involved": "Get Involved"
+  },
+  "common": {
+    "readMore": "Read more",
+    "viewAll": "View all",
+    "install": "Install App",
+    "language": "Language"
+  }
+}

@@ -1,0 +1,520 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  CONTENT_ADMIN
+  MEMBERSHIP_ADMIN
+  EDITOR
+  VIEWER
+}
+
+model User {
+  id             String             @id @default(cuid())
+  name           String
+  email          String             @unique
+  passwordHash   String
+  role           Role               @default(EDITOR)
+  createdAt      DateTime           @default(now())
+  media          Media[]
+  blogPosts      BlogPost[]
+  activityLogs   ActivityLog[]
+}
+
+// Reusable translated text is stored as JSON string: {"en":"...","am":"...","om":"..."}
+
+// ─── GLOBAL SETTINGS (singleton) ────────────────────────────────────────────
+
+model GlobalSettings {
+  id              String   @id @default("site-settings")
+  orgName         String   @default("Nesim")
+  shortName       String   @default("Nesim")
+  logoUrl         String?
+  darkLogoUrl     String?
+  faviconUrl      String?
+  tagline         String?
+  phone           String?
+  email           String?
+  address         String?
+  facebookUrl     String?
+  twitterUrl      String?
+  instagramUrl    String?
+  youtubeUrl      String?
+  linkedinUrl     String?
+  telegramUrl     String?
+  footerText      String?
+  copyrightText   String?
+  seoTitle        String?
+  seoDescription  String?
+  seoKeywords     String?
+  primaryColor    String?  @default("#0F4C2A")
+  accentColor     String?  @default("#E8721C")
+  donationLink    String?
+  membershipLink  String?
+  analyticsId     String?
+  mapEmbedUrl     String?
+  ctaText         String?
+  ctaUrl          String?
+  updatedAt       DateTime @updatedAt
+}
+
+// ─── MEDIA LIBRARY ──────────────────────────────────────────────────────────
+
+model Media {
+  id         String   @id @default(cuid())
+  url        String
+  altText    String?
+  fileType   String   @default("image")
+  fileSize   Int?
+  mimeType   String?
+  uploadedBy String?
+  uploader   User?    @relation(fields: [uploadedBy], references: [id])
+  createdAt  DateTime @default(now())
+}
+
+// ─── ACTIVITY LOG ───────────────────────────────────────────────────────────
+
+model ActivityLog {
+  id       String   @id @default(cuid())
+  userId   String?
+  user     User?    @relation(fields: [userId], references: [id])
+  action   String
+  entity   String
+  entityId String?
+  details  String?
+  createdAt DateTime @default(now())
+
+  @@index([entity, entityId])
+  @@index([userId])
+}
+
+// ─── HERO SLIDES ────────────────────────────────────────────────────────────
+
+model HeroSlide {
+  id         String  @id @default(cuid())
+  imageUrl   String
+  title      String
+  subtitle   String?
+  buttonText String?
+  buttonUrl  String?
+  order      Int     @default(0)
+  active     Boolean @default(true)
+  createdAt  DateTime @default(now())
+}
+
+// ─── ABOUT CONTENT (singleton) ──────────────────────────────────────────────
+
+model AboutContent {
+  id            String   @id @default("about-content")
+  heroTitle     String?
+  heroSubtitle  String?
+  heroImageUrl  String?
+  storyTitle    String?
+  storyBody     String?
+  storyImageUrl String?
+  missionText   String?
+  visionText    String?
+  valuesText    String?
+  timelineData  String?
+  updatedAt     DateTime @updatedAt
+}
+
+// ─── LANDING PAGE CONTENT (singleton) ─────────────────────────────────────
+
+model LandingContent {
+  id                    String   @id @default("landing-content")
+  communityTitle        String?  @db.Text
+  communitySubtitle     String?  @db.Text
+  communityImages       String?  @db.Text
+  impactTitle           String?  @db.Text
+  impactDescription     String?  @db.Text
+  impactImageUrl        String?  @db.Text
+  impactQuote           String?  @db.Text
+  impactQuoteAuthor     String?  @db.Text
+  impactStats           String?  @db.Text
+  impactFloatingValue   String?  @db.Text
+  impactFloatingLabel   String?  @db.Text
+  impactCtaText         String?  @db.Text
+  impactCtaUrl          String?  @db.Text
+  factsTitle            String?  @db.Text
+  factsSubtitle         String?  @db.Text
+  factsItems            String?  @db.Text
+  factsCtaText          String?  @db.Text
+  factsCtaUrl           String?  @db.Text
+  reachTitle            String?  @db.Text
+  reachSubtitle         String?  @db.Text
+  reachRegions          String?  @db.Text
+  processTitle          String?  @db.Text
+  processSubtitle       String?  @db.Text
+  processSteps          String?  @db.Text
+  storiesTitle          String?  @db.Text
+  storiesSubtitle       String?  @db.Text
+  storiesItems          String?  @db.Text
+  updatedAt             DateTime @updatedAt
+}
+
+// ─── ISLAMIC MESSAGES ───────────────────────────────────────────────────────
+
+model IslamicMessage {
+  id              String  @id @default(cuid())
+  type            String  @default("message")
+  arabicText      String?
+  translation     String
+  reference       String?
+  backgroundImage String?
+  active          Boolean @default(true)
+  order           Int     @default(0)
+  createdAt       DateTime @default(now())
+}
+
+// ─── PRESIDENT MESSAGE (singleton) ──────────────────────────────────────────
+
+model PresidentMessage {
+  id            String  @id @default("president-message")
+  photoUrl      String?
+  name          String
+  position      String
+  message       String
+  signatureUrl  String?
+  updatedAt     DateTime @updatedAt
+}
+
+// ─── PROGRAMS ───────────────────────────────────────────────────────────────
+
+model Program {
+  id          String   @id @default(cuid())
+  title       String
+  summary     String
+  body        String
+  icon        String?
+  imageUrl    String?
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── PROJECTS ───────────────────────────────────────────────────────────────
+
+model ProjectCategory {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String    @unique
+  projects Project[]
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  altText   String?
+  order     Int     @default(0)
+}
+
+model Project {
+  id           String         @id @default(cuid())
+  title        String
+  slug         String?        @unique
+  summary      String
+  body         String
+  location     String?
+  status       String         @default("ongoing")
+  imageUrl     String?
+  categoryId   String?
+  category     ProjectCategory? @relation(fields: [categoryId], references: [id])
+  images       ProjectImage[]
+  startDate    DateTime?
+  endDate      DateTime?
+  published    Boolean        @default(true)
+  featured     Boolean        @default(false)
+  order        Int            @default(0)
+  seoTitle     String?
+  seoDescription String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+// ─── SERVICES ───────────────────────────────────────────────────────────────
+
+model Service {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  summary        String
+  body           String
+  imageUrl       String?
+  icon           String?
+  featured       Boolean  @default(false)
+  published      Boolean  @default(true)
+  order          Int      @default(0)
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// ─── IMPACT STATS ───────────────────────────────────────────────────────────
+
+model ImpactStat {
+  id        String  @id @default(cuid())
+  label     String
+  value     Int
+  suffix    String?
+  prefix    String?
+  icon      String?
+  description String?
+  order     Int     @default(0)
+  active    Boolean @default(true)
+}
+
+// ─── TESTIMONIALS ───────────────────────────────────────────────────────────
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  quote     String
+  photoUrl  String?
+  rating    Int?
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+// ─── PARTNERS ───────────────────────────────────────────────────────────────
+
+model Partner {
+  id          String  @id @default(cuid())
+  name        String
+  logoUrl     String?
+  websiteUrl  String?
+  description String?
+  order       Int     @default(0)
+  active      Boolean @default(true)
+  createdAt   DateTime @default(now())
+}
+
+// ─── NEWS ───────────────────────────────────────────────────────────────────
+
+model NewsCategory {
+  id    String     @id @default(cuid())
+  name  String
+  slug  String     @unique
+  posts NewsPost[]
+}
+
+model NewsPost {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String?       @unique
+  excerpt       String
+  body          String
+  coverUrl      String?
+  category      String        @default("news")
+  newsCategoryId String?
+  newsCategory  NewsCategory? @relation(fields: [newsCategoryId], references: [id])
+  author        String?
+  published     Boolean       @default(true)
+  featured      Boolean       @default(false)
+  publishedAt   DateTime      @default(now())
+  seoTitle      String?
+  seoDescription String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+// ─── BLOG ───────────────────────────────────────────────────────────────────
+
+model BlogCategory {
+  id    String     @id @default(cuid())
+  name  String
+  slug  String     @unique
+  posts BlogPost[]
+}
+
+model Tag {
+  id    String     @id @default(cuid())
+  name  String
+  slug  String     @unique
+  posts BlogPost[]
+}
+
+model BlogPost {
+  id             String         @id @default(cuid())
+  title          String
+  slug           String         @unique
+  excerpt        String
+  body           String
+  coverUrl       String?
+  authorId       String?
+  author         User?          @relation(fields: [authorId], references: [id])
+  categoryId     String?
+  category       BlogCategory?  @relation(fields: [categoryId], references: [id])
+  tags           Tag[]
+  published      Boolean        @default(false)
+  featured       Boolean        @default(false)
+  publishedAt    DateTime?
+  seoTitle       String?
+  seoDescription String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+// ─── GALLERY ────────────────────────────────────────────────────────────────
+
+model Gallery {
+  id          String        @id @default(cuid())
+  title       String
+  description String?
+  coverImage  String?
+  eventDate   DateTime?
+  images      GalleryImage[]
+  published   Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+}
+
+model GalleryImage {
+  id        String  @id @default(cuid())
+  galleryId String
+  gallery   Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  altText   String?
+  order     Int     @default(0)
+}
+
+// ─── RESOURCES ──────────────────────────────────────────────────────────────
+
+model ResourceCategory {
+  id        String     @id @default(cuid())
+  name      String
+  slug      String     @unique
+  resources Resource[]
+}
+
+model Resource {
+  id            String           @id @default(cuid())
+  title         String
+  description   String?
+  categoryId    String?
+  category      ResourceCategory? @relation(fields: [categoryId], references: [id])
+  fileUrl       String
+  coverImage    String?
+  fileType      String?
+  published     Boolean          @default(true)
+  publishedAt   DateTime?
+  downloadCount Int              @default(0)
+  createdAt     DateTime         @default(now())
+}
+
+// ─── FAQ ────────────────────────────────────────────────────────────────────
+
+model FaqItem {
+  id        String   @id @default(cuid())
+  question  String
+  answer    String
+  order     Int      @default(0)
+  published Boolean  @default(true)
+}
+
+// ─── TEAM ───────────────────────────────────────────────────────────────────
+
+model TeamMember {
+  id        String  @id @default(cuid())
+  name      String
+  role      String
+  photoUrl  String?
+  bio       String?
+  isLeader  Boolean @default(false)
+  order     Int     @default(0)
+  published Boolean @default(true)
+  createdAt DateTime @default(now())
+}
+
+// ─── MEMBERSHIP ─────────────────────────────────────────────────────────────
+
+model MembershipCategory {
+  id           String                  @id @default(cuid())
+  name         String
+  description  String?
+  requirements String?
+  benefits     String?
+  applications MembershipApplication[]
+  published    Boolean                 @default(true)
+  order        Int                     @default(0)
+}
+
+model MembershipApplication {
+  id         String              @id @default(cuid())
+  firstName  String
+  lastName   String
+  email      String
+  phone      String
+  dob        DateTime?
+  gender     String?
+  address    String?
+  city       String?
+  occupation String?
+  categoryId String?
+  category   MembershipCategory? @relation(fields: [categoryId], references: [id])
+  motivation String?
+  documents  String?
+  status     String              @default("new")
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+}
+
+// ─── SUBMISSIONS ────────────────────────────────────────────────────────────
+
+model VolunteerApplication {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  city      String?
+  skills    String?
+  message   String?
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+}
+
+model RegistrationSubmission {
+  id          String   @id @default(cuid())
+  fullName    String
+  email       String
+  phone       String
+  program     String?
+  city        String?
+  notes       String?
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+}
+
+model DonationIntent {
+  id         String   @id @default(cuid())
+  name       String
+  email      String
+  phone      String?
+  amount     Int
+  currency   String   @default("ETB")
+  method     String?
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+}

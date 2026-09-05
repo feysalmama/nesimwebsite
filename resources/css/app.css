@@ -1,0 +1,298 @@
+@import 'tailwindcss';
+
+/* Compiled Blade + Livewire views live in gitignored storage paths, which
+   Tailwind's automatic source detection skips, so they are declared here. */
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/*/dist/*.js';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../../app/**/*.php';
+
+/*
+ * Brand tokens ported 1:1 from the Next.js tailwind.config.ts so the Blade
+ * templates can keep using the same utility names (bg-forest, text-sun, ...).
+ */
+@theme {
+    --color-forest: #0f4c2a;
+    --color-leaf: #2e8b4f;
+    --color-leaflight: #6fbe7d;
+    --color-canopy: #e9f3ea;
+    --color-sun: #e8721c;
+    --color-sunlight: #f2a03f;
+    --color-globe: #2d74b5;
+    --color-sky: #8ed0ee;
+    --color-cream: #faf8f4;
+    --color-ink: #152018;
+    --color-stone: #5c6862;
+    --color-danger: #c1432e;
+
+    /* IslamicMessageBreak renders its Arabic line with .font-arabic, but the
+       Next.js tailwind.config.ts never defined an `arabic` family, so the class
+       was a silent no-op and the browser chose the face itself. Defined here so
+       the quotation actually renders in a naskh style. */
+    --font-arabic: 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+
+    --font-display: 'Fraunces', ui-serif, Georgia, serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-accent: 'JetBrains Mono', ui-monospace, monospace;
+
+    /* Ge'ez script has no coverage in Fraunces/Inter, so Amharic needs its own
+       face or it falls back to whatever the browser picks. */
+    --font-ethiopic: 'Noto Sans Ethiopic', 'Nyala', sans-serif;
+
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-spin-slow: spin-slow 40s linear infinite;
+    --animate-drift: drift 8s ease-in-out infinite;
+    --animate-reveal: reveal 0.6s ease-out both;
+    --animate-reveal-left: reveal-left 0.6s ease-out both;
+    --animate-reveal-right: reveal-right 0.6s ease-out both;
+    --animate-reveal-scale: reveal-scale 0.6s ease-out both;
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-14px); }
+    }
+
+    @keyframes spin-slow {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes drift {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(6px, -10px); }
+    }
+
+    @keyframes reveal {
+        0% { opacity: 0; transform: translateY(24px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes reveal-left {
+        0% { opacity: 0; transform: translateX(-24px); }
+        100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes reveal-right {
+        0% { opacity: 0; transform: translateX(24px); }
+        100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes reveal-scale {
+        0% { opacity: 0; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #faf8f4;
+    color: #152018;
+}
+
+::selection {
+    background-color: #e8721c;
+    color: #faf8f4;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid #e8721c;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Amharic pages swap the whole document to the Ethiopic face. */
+html[lang='am'] body {
+    font-family: var(--font-ethiopic);
+}
+
+.route-thread {
+    background-image: linear-gradient(to bottom, transparent, transparent 6px, #6fbe7d 6px, #6fbe7d 7px, transparent 7px, transparent);
+    background-size: 1px 22px;
+    background-repeat: repeat-y;
+}
+
+.text-balance {
+    text-wrap: balance;
+}
+
+/*
+ * ScrollReveal replacement.
+ *
+ * Scoped under html.js, which layouts/site.blade.php adds from an inline script
+ * in the head. The React version mounted every section hidden, so without
+ * JavaScript the whole homepage was invisible; here a no-JS visitor just sees
+ * the content statically.
+ */
+.js .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/*
+ * Header dropdowns (navbar groups and the language switcher).
+ *
+ * Three ways in, matching what the React components did between them: hover for
+ * a mouse, :focus-within for keyboard and for a button that receives focus on
+ * click, and .is-open which app.js toggles because touch browsers do not fire
+ * hover and do not always focus on tap.
+ */
+.nav-panel,
+.lang-menu {
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.group:hover > .nav-panel,
+.group:focus-within > .nav-panel,
+.is-open > .nav-panel,
+.lang-wrap:focus-within .lang-menu,
+.lang-wrap.is-open .lang-menu {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+
+.nav-chevron {
+    transition: transform 0.2s ease;
+}
+
+.group:hover .nav-chevron,
+.group:focus-within .nav-chevron,
+.is-open .nav-chevron {
+    transform: rotate(180deg);
+}
+
+/* Mobile accordion bodies in the slide-in panel. */
+.nav-accordion {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease, opacity 0.2s ease;
+}
+
+.is-open > .nav-accordion {
+    max-height: 20rem;
+    opacity: 1;
+}
+
+/*
+ * Sticky header states.
+ *
+ * The React Navbar swapped Tailwind classes from useState. Those are written
+ * here instead so the state lives in one stylesheet and cannot be purged: the
+ * scrolled and open values are only ever produced by JavaScript at runtime, and
+ * a class that appears nowhere in the scanned sources is a class Tailwind never
+ * generates.
+ */
+header[data-nav-scrolled='true'] {
+    border-bottom-color: rgb(46 139 79 / 0.1);
+    background-color: rgb(255 255 255 / 0.95);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    backdrop-filter: blur(12px);
+}
+
+.nav-mobile-panel {
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+}
+
+.nav-mobile-backdrop {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+header[data-nav-open='true'] .nav-mobile-panel {
+    transform: none;
+}
+
+header[data-nav-open='true'] .nav-mobile-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* The three hamburger bars collapse into a cross. */
+.nav-bar {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+header[data-nav-open='true'] .nav-bar-1 {
+    transform: translateY(7px) rotate(45deg);
+}
+
+header[data-nav-open='true'] .nav-bar-2 {
+    transform: scaleX(0);
+    opacity: 0;
+}
+
+header[data-nav-open='true'] .nav-bar-3 {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/*
+ * Hero slider dots. Same reasoning as the header states: the active dot is only
+ * ever produced by JavaScript at runtime, and it must not inherit the inactive
+ * dot's white hover — which out-ranks a plain background utility.
+ */
+[data-hero-dot] {
+    width: 0.625rem;
+    background-color: rgb(255 255 255 / 0.5);
+}
+
+[data-hero-dot]:hover {
+    background-color: rgb(255 255 255 / 0.8);
+}
+
+[data-hero-dot][data-active='true'],
+[data-hero-dot][data-active='true']:hover {
+    width: 2rem;
+    background-color: var(--color-sun);
+}
+
+/*
+ * CMS sidebar groups. Same pattern as the header states above: the collapsed
+ * flag is written by initAdminSidebar() in app.js, never by a Livewire or
+ * Alpine binding, because the dashboard and the login page render no component
+ * and so receive neither runtime. These rules are unlayered, which is what lets
+ * them beat any utility on the same element.
+ */
+.admin-group-body {
+    display: block;
+}
+
+[data-admin-group][data-collapsed='true'] .admin-group-body {
+    display: none;
+}
+
+.admin-chevron {
+    transition: transform 0.2s ease;
+}
+
+/* -rotate-90 in AdminSidebar.tsx: the chevron points down when open. */
+[data-admin-group][data-collapsed='true'] .admin-chevron {
+    transform: rotate(-90deg);
+}

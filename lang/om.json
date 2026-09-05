@@ -1,0 +1,208 @@
+{
+  "nav": {
+    "home": "Fuula Jalqabaa",
+    "about": "Waa'ee Keenya",
+    "programs": "Sagantaalee",
+    "projects": "Piroojektoota",
+    "impact": "Fooyya'iinsa",
+    "volunteer": "Tola Ooltummaa",
+    "testimonials": "Ragaalee",
+    "news": "Oduu fi Miidiyaa",
+    "insights": "Hubannoo",
+    "faq": "Gaaffilee Yeroo Baayyee Gaafataman",
+    "contact": "Nu Quunnamaa",
+    "register": "Galmee",
+    "donate": "Arjooma Gochuu",
+    "services": "Tajaajila",
+    "blog": "Biloogii",
+    "gallery": "Galerii",
+    "resources": "Madda",
+    "membership": "Miseensummaa",
+    "leadership": "Hogganaa",
+    "media": "Miidiyaa",
+    "getInvolved": "Hirmaadhu",
+    "programsGroup": "Sagantaalee",
+    "overview": "Ilaacha Waliigalaa"
+  },
+  "hero": {
+    "eyebrow": "Dhaabbata Barnootaa fi Misooma Nesim",
+    "title": "Sammuu guddifna, jijjiirama hidda gadi buufna",
+    "subtitle": "Meeshaalee barnootaa hawaasota Itoophiyaa keessa jiraniif kaayyachuun akka isaan gara fuulduraa mataa isaanii guddifatan gargaarra — barnootaan, carraan, fi misooma itti fufaan.",
+    "ctaPrimary": "Amma Arjoomaa",
+    "ctaSecondary": "Sagantaalee Keenya Ilaalaa"
+  },
+  "impact": {
+    "eyebrow": "Fooyya'iinsa Safaramuu Danda'u",
+    "title": "Jijjiirama Lakkoofnu",
+    "subtitle": "Lakkoofsi tokkoon tokkoon namoota, kutaa barnootaa, hawaasa gara fuulduraatti deemu bakka bu'a."
+  },
+  "programs": {
+    "eyebrow": "Waan Hojjennu",
+    "title": "Sagantaalee Keenya",
+    "subtitle": "Sochiiwwan hawaasonni akka baay'ee isaan barbaachisu nutti himan irratti hundaa'anii xiyyeeffatan."
+  },
+  "projects": {
+    "eyebrow": "Lafa Irratti",
+    "title": "Piroojektoota Keenya",
+    "subtitle": "Hojiiwwan kutaalee tajaajilluu keessatti hojjetaman kanneen itti fufan fi xumuraman.",
+    "status": {
+      "ongoing": "Itti Fufaa Jira",
+      "completed": "Xumurameera"
+    }
+  },
+  "about": {
+    "eyebrow": "Nuti Eenyu?",
+    "title": "Waa'ee Nesim",
+    "mission": "Ergama Keenya",
+    "vision": "Mul'ata Keenya",
+    "values": "Duudhaalee Keenya",
+    "team": "Garee Keenya"
+  },
+  "testimonials": {
+    "eyebrow": "Sagaleewwan",
+    "title": "Ragaalee",
+    "subtitle": "Seenaa namootaa fi hawaasota waliin hojjennu irraa."
+  },
+  "volunteer": {
+    "eyebrow": "Nu Waliin Ta'aa",
+    "title": "Nesim Waliin Tola Ooluu",
+    "subtitle": "Yeroo fi dandeettii keessan kaayyoo harka hundaan guddatuuf fidaa.",
+    "form": {
+      "name": "Maqaa Guutuu",
+      "email": "Imeelii",
+      "phone": "Lakkoofsa Bilbilaa",
+      "city": "Magaalaa",
+      "skills": "Dandeettii / Dhimmoota Fedhii",
+      "message": "Maaliif akka tola ooltuu barbaaddan nutti himaa",
+      "submit": "Iyyata Ergaa",
+      "success": "Galatoomaa — dhiyootti isin quunnamna."
+    }
+  },
+  "news": {
+    "eyebrow": "Beekamtii Qabaadhaa",
+    "title": "Oduu fi Miidiyaa",
+    "subtitle": "Beeksisaalee, gabaasa, fi seenaawwan bakka hojii irraa."
+  },
+  "insights": {
+    "eyebrow": "Nu Waliin Baradhaa",
+    "title": "Hubannoo",
+    "subtitle": "Yaadota, qorannoo, fi barumsa hojii keenya irraa."
+  },
+  "faq": {
+    "eyebrow": "Gaaffilee",
+    "title": "Gaaffilee Yeroo Baayyee Gaafataman"
+  },
+  "contact": {
+    "eyebrow": "Nu Quunnamaa",
+    "title": "Nu Quunnamaa",
+    "subtitle": "Isin irraa dhagahuu jaallanna.",
+    "form": {
+      "name": "Maqaa Guutuu",
+      "email": "Imeelii",
+      "subject": "Mata Duree",
+      "message": "Ergaa",
+      "submit": "Ergaa Ergaa",
+      "success": "Ergaan keessan ergameera — nu quunnamuu keessaniif galatoomaa."
+    },
+    "address": "Teessoo",
+    "phone": "Bilbila",
+    "email": "Imeelii"
+  },
+  "register": {
+    "eyebrow": "Hirmaadhaa",
+    "title": "Galmee",
+    "subtitle": "Sagantaa, taateewwan, ykn miseensummaaf galmaa'aa.",
+    "form": {
+      "name": "Maqaa Guutuu",
+      "email": "Imeelii",
+      "phone": "Lakkoofsa Bilbilaa",
+      "program": "Sagantaa Fedhii",
+      "city": "Magaalaa",
+      "notes": "Yaada Dabalataa",
+      "submit": "Galmee Ergaa",
+      "success": "Galmoofteessan — dhiyootti isin hordofna."
+    }
+  },
+  "donate": {
+    "eyebrow": "Hojii Keenya Deeggaraa",
+    "title": "Arjooma Gochuu",
+    "subtitle": "Gumaachi keessan kutaalee barnootaa fi hawaasota keessatti jijjiirama dhugaa fida.",
+    "form": {
+      "name": "Maqaa Guutuu",
+      "email": "Imeelii",
+      "phone": "Lakkoofsa Bilbilaa",
+      "amount": "Hanga (Birr)",
+      "method": "Mala Kaffaltii",
+      "submit": "Arjoomaatti Itti Fufaa",
+      "success": "Arjummaa keessaniif galatoomaa — gareen keenya dhiyootti mirkaneessa."
+    }
+  },
+  "services": {
+    "eyebrow": "Akkam Gargaarra",
+    "title": "Tajaajila Keenya",
+    "subtitle": "Deggersa hojii hawaasota, dhaabbilee fi namoota dhuunfaaf."
+  },
+  "blog": {
+    "eyebrow": "Seenaa fi Hubannoo",
+    "title": "Biloogii",
+    "subtitle": "Yaadota, seenaa diqii, fi yaadannoo garee keenya irraa."
+  },
+  "gallery": {
+    "eyebrow": "Yaadannoo",
+    "title": "Galerii Suuraa",
+    "subtitle": "Seenaa mul'ata sagantaalee fi taateewwan keenya irraa."
+  },
+  "resources": {
+    "eyebrow": "Dokumantota",
+    "title": "Madda Odeeffannoo",
+    "subtitle": "Gabaasota, qajeelfamoota fi maxxansa buufachuuf qophaa'an.",
+    "download": "Buufadhu"
+  },
+  "membership": {
+    "eyebrow": "Nu Waliin Ta'aa",
+    "title": "Miseensummaa",
+    "subtitle": "Kutaa hawaasa Nesim keessaa ta'aa nu waliin guddisaa.",
+    "benefits": "Faayidaalee",
+    "requirements": "Ulaagaalee",
+    "applyTitle": "Miseensummaaf Iyyadhaa",
+    "applySubtitle": "Unka gadii guutaa gareen keenya iyyannoo keessan ni gumaata.",
+    "firstName": "Maqaa Duraa",
+    "lastName": "Maqaa Abbaa",
+    "email": "Imeelii",
+    "phone": "Lakkoofsa Bilbilaa",
+    "dob": "Guyyaa Dhaloota",
+    "gender": "Saala",
+    "male": "Dhiira",
+    "female": "Dubartii",
+    "address": "Teessoo",
+    "city": "Magaalaa",
+    "occupation": "Hojii",
+    "category": "Gosa Miseensummaa",
+    "motivation": "Maaliif makamuun barbaaddu?",
+    "selectOption": "Filannoo filadhu",
+    "submit": "Iyyannoo Ergaa",
+    "success": "Iyyannoon dhiyaateera — dhiyootti isin quunnamna."
+  },
+  "leadership": {
+    "eyebrow": "Namoota Keenya",
+    "title": "Hogganaa fi Garee",
+    "subtitle": "Namoota ergama Nesim hoggananii fi guyyaa guyyaan hojjetan.",
+    "leaders": "Hogganaa",
+    "team": "Garee"
+  },
+  "footer": {
+    "tagline": "Dhaabbata Barnootaa fi Misooma",
+    "quickLinks": "Hidhannoo Ariifachiisaa",
+    "contact": "Nu Quunnamaa",
+    "follow": "Nu Hordofaa",
+    "rights": "Mirgi hundi ni eegama.",
+    "explore": "Sakattaʼi",
+    "involved": "Hirmaadhu"
+  },
+  "common": {
+    "readMore": "Dabalata Dubbisaa",
+    "viewAll": "Hunda Ilaalaa",
+    "install": "Aappii Fe'aa",
+    "language": "Afaan"
+  }
+}
