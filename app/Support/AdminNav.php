@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Admin\Specs\AboutContentSpec;
 use App\Admin\Specs\ActivityLogSpec;
+use App\Admin\Specs\BankAccountSpec;
 use App\Admin\Specs\BlogCategorySpec;
 use App\Admin\Specs\BlogPostSpec;
 use App\Admin\Specs\ContactMessageSpec;
@@ -57,7 +58,7 @@ final class AdminNav
      *
      * 'dashboard' is absent because it is not a resource: it counts rows across
      * every table, so it has its own controller and view. Everything else in the
-     * sidebar is here — 32 modules over four spec shapes and four components.
+     * sidebar is here — 33 modules over four spec shapes and four components.
      *
      * @var array<string, class-string<\App\Admin\AdminSpec>>
      */
@@ -82,6 +83,13 @@ final class AdminNav
         'islamic-messages' => IslamicMessageSpec::class,
         'president-message' => PresidentMessageSpec::class,
         'partners' => PartnerSpec::class,
+
+        /*
+         * The one slug here the React admin's folder names did not produce: it
+         * had no bank accounts module, and /donate hardcoded a footnote saying
+         * the details were confirmed after submission. Same shape as partners.
+         */
+        'bank-accounts' => BankAccountSpec::class,
 
         // Media
         'media' => MediaLibrarySpec::class,
@@ -141,6 +149,7 @@ final class AdminNav
                     ['label' => 'Islamic Messages', 'slug' => 'islamic-messages'],
                     ['label' => "Chairman's Message", 'slug' => 'president-message'],
                     ['label' => 'Partners', 'slug' => 'partners'],
+                    ['label' => 'Bank Accounts', 'slug' => 'bank-accounts'],
                 ],
             ],
             [

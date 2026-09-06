@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Models\BankAccount;
 use App\Models\DonationIntent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,9 +23,20 @@ class DonateController extends Controller
     /** The three options the React <select> offered, in the same order. */
     private const METHODS = ['telebirr' => 'Telebirr', 'bank' => 'Bank Transfer', 'card' => 'Card (Chapa)'];
 
+    /**
+     * $banks is the one part of this page the React app did not have: it printed
+     * a footnote promising that bank transfer details would be confirmed after
+     * submission and listed nothing, so a donor who chose "Bank Transfer" had no
+     * account to transfer to. The rows come from the CMS module at
+     * /admin/bank-accounts, filtered and ordered by the same scopeActive() the
+     * partner strip uses.
+     */
     public function __invoke(): View
     {
-        return view('site.donate', ['methods' => self::METHODS]);
+        return view('site.donate', [
+            'methods' => self::METHODS,
+            'banks' => BankAccount::active()->get(),
+        ]);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\AboutContent;
+use App\Models\BankAccount;
 use App\Models\BlogPost;
 use App\Models\Gallery;
 use App\Models\LandingContent;
@@ -505,5 +506,49 @@ class PublicSiteTest extends TestCase
             ->assertSee('Tigist Hailu')
             ->assertSee('Addis Ababa')
             ->assertSee('25 million');
+    }
+
+    /* ── The donate page reads what the CMS writes ─────────────────────────── */
+
+    /**
+     * The bank accounts /admin/bank-accounts edits are the ones /donate lists,
+     * and one an editor has turned off is not listed at all.
+     *
+     * Both halves matter. The page answers 200 with the section absent —
+     * $banks is empty on a fresh install and donate.blade.php wraps it in
+     * isNotEmpty() — so a green render says nothing about whether the column
+     * the CMS writes is the column the page reads. Reading the table without
+     * scopeActive() fails the other way: a hidden bank stays on screen.
+     *
+     * The two other locales are checked on the heading rather than on the rows,
+     * which are language-independent. A missing donate.banks.title in am.json
+     * would fall back to the English line and render a 200 all the same.
+     */
+    public function test_a_bank_account_added_in_the_cms_reaches_the_donate_page(): void
+    {
+        BankAccount::query()->create([
+            'name' => 'Zz Test Bank',
+            'accountNumber' => '1000999888777',
+            'accountName' => 'Zz Nesim Foundation',
+            'logoUrl' => '/uploads/zz-bank-logo.png',
+            'order' => 0,
+            'active' => true,
+        ]);
+
+        BankAccount::query()->create([
+            'name' => 'Zz Hidden Bank',
+            'accountNumber' => '1111222233333',
+            'active' => false,
+        ]);
+
+        $this->get('/en/donate')->assertOk()
+            ->assertSee('Zz Test Bank')
+            ->assertSee('1000999888777')
+            ->assertSee('Zz Nesim Foundation')
+            ->assertSee('/uploads/zz-bank-logo.png', false)
+            ->assertDontSee('Zz Hidden Bank');
+
+        $this->get('/am/donate')->assertOk()->assertSee('የባንክ ሒሳቦች');
+        $this->get('/om/donate')->assertOk()->assertSee('Herregawwan Baankii');
     }
 }

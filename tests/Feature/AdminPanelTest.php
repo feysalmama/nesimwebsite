@@ -10,6 +10,7 @@ use App\Livewire\Admin\SubmissionManager;
 use App\Livewire\Admin\UserManager;
 use App\Models\AboutContent;
 use App\Models\ActivityLog;
+use App\Models\BankAccount;
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use App\Models\GlobalSettings;
@@ -102,7 +103,7 @@ class AdminPanelTest extends TestCase
             ->assertForbidden();
     }
 
-    /* ── ResourceSpec: the 21 table modules ───────────────────────────────── */
+    /* ── ResourceSpec: the 22 table modules ───────────────────────────────── */
 
     public function test_resource_manager_creates_updates_and_deletes_a_row(): void
     {
@@ -168,6 +169,40 @@ class AdminPanelTest extends TestCase
             ->call('setMediaUrl', 'logoUrl', '/uploads/zz-fine.png')
             ->assertSet('form.logoUrl', '/uploads/zz-fine.png')
             ->assertSet('uploadError', null);
+    }
+
+    /**
+     * Bank accounts is the one module that is not a port, and the only one whose
+     * columns no Prisma schema ever described — a migration wrote them. So the
+     * spec's field names have to match it, and only a save can prove that: the
+     * panel renders `order` and `active` and reads nothing else, so a misspelt
+     * accountNumber would sit undetected until an editor first pressed Save.
+     */
+    public function test_bank_accounts_writes_every_field_its_spec_declares(): void
+    {
+        $this->actingAs($this->staff());
+
+        Livewire::test(ResourceManager::class, ['resource' => 'bank-accounts'])
+            ->call('openCreate')
+            ->set('form.name', 'Zz Test Bank')
+            ->set('form.accountNumber', '1000999888777')
+            ->set('form.accountName', 'Zz Nesim Foundation')
+            ->call('setMediaUrl', 'logoUrl', '/uploads/zz-bank-logo.png')
+            ->set('form.order', 3)
+            ->set('form.active', true)
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $bank = BankAccount::query()->where('name', 'Zz Test Bank')->first();
+
+        $this->assertNotNull($bank, 'the row was not written');
+        $this->assertSame('1000999888777', $bank->accountNumber);
+        $this->assertSame('Zz Nesim Foundation', $bank->accountName);
+        $this->assertSame('/uploads/zz-bank-logo.png', $bank->logoUrl);
+        $this->assertSame(3, (int) $bank->order);
+        $this->assertTrue((bool) $bank->active);
+
+        $this->assertDatabaseHas('activitylog', ['entity' => 'BankAccount', 'action' => 'create']);
     }
 
     /**

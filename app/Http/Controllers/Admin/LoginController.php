@@ -45,6 +45,63 @@ class LoginController extends Controller
         }
 
         $user = User::where('email', $credentials['email'])->first();
+        $user = User::where('email', $credentials['email'])->first();
+
+        \Log::info('LOGIN DEBUG - user lookup', [
+            'email' => $credentials['email'],
+            'user_found' => (bool) $user,
+            'user_id' => $user?->id,
+            'hash_prefix' => $user ? substr($user->passwordHash, 0, 4) : null,
+            'hash_length' => $user ? strlen($user->passwordHash) : null,
+        ]);
+
+        if (! $user) {
+            RateLimiter::hit($throttleKey);
+
+            throw ValidationException::withMessages([
+                'email' => 'Invalid email or password.',
+            ]);
+        }
+
+        try {
+            $passwordValid = $user->verifyPassword($credentials['password']);
+
+            \Log::info('LOGIN DEBUG - password verification', [
+                'password_valid' => $passwordValid,
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('LOGIN DEBUG - password verification exception', [
+                'exception' => get_class($e),
+                'message' => $e->getMessage(),
+            ]);
+
+            throw $e;
+        }
+
+        if (! $passwordValid) {
+            RateLimiter::hit($throttleKey);
+
+            throw ValidationException::withMessages([
+                'email' => 'Invalid email or password.',
+            ]);
+        }
+
+        RateLimiter::clear($throttleKey);
+
+        Auth::login($user);
+
+        \Log::info('LOGIN DEBUG - after Auth::login', [
+            'check' => Auth::check(),
+            'auth_id' => Auth::id(),
+        ]);
+
+        $request->session()->regenerate();
+
+        \Log::info('LOGIN DEBUG - after session regenerate', [
+            'check' => Auth::check(),
+            'auth_id' => Auth::id(),
+        ]);
+
 
         /*
          * verifyPassword(), never Auth::attempt(): the stored hashes were written
