@@ -47,13 +47,16 @@ class LoginController extends Controller
         $user = User::where('email', $credentials['email'])->first();
         $user = User::where('email', $credentials['email'])->first();
 
-        \Log::info('LOGIN DEBUG - user lookup', [
-            'email' => $credentials['email'],
-            'user_found' => (bool) $user,
-            'user_id' => $user?->id,
-            'hash_prefix' => $user ? substr($user->passwordHash, 0, 4) : null,
-            'hash_length' => $user ? strlen($user->passwordHash) : null,
-        ]);
+       \Log::info('DASHBOARD AUTH DEBUG', [
+           'url' => request()->fullUrl(),
+           'host' => request()->getHost(),
+           'scheme' => request()->getScheme(),
+           'secure' => request()->isSecure(),
+           'session_id' => request()->session()->getId(),
+           'auth_check' => Auth::check(),
+           'auth_id' => Auth::id(),
+           'cookies' => request()->cookies->all(),
+       ]);
 
         if (! $user) {
             RateLimiter::hit($throttleKey);
