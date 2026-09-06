@@ -415,21 +415,11 @@
                                        align="center" />
                     <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         @foreach ($team as $member)
-                            <div class="rounded-2xl border border-leaf/15 bg-white p-5 shadow-sm">
-                                <div class="relative mx-auto h-24 w-24 overflow-hidden rounded-2xl bg-canopy">
-                                    @if ($member->photoUrl)
-                                        <img src="{{ $member->photoUrl }}" alt="{{ $member->name }}" loading="lazy"
-                                             class="absolute inset-0 h-full w-full object-cover">
-                                    @else
-                                        <div class="flex h-full items-center justify-center text-3xl">👤</div>
-                                    @endif
-                                </div>
-                                <h3 class="mt-4 text-center font-display text-base font-semibold text-forest">{{ $member->name }}</h3>
-                                <p class="text-center text-sm text-leaf">{{ $member->text('role') }}</p>
-                                @if ($member->bio)
-                                    <p class="mt-2 text-center text-sm text-stone">{{ $member->bio }}</p>
-                                @endif
-                            </div>
+
+                                 <x-reveal :delay="$loop->index * 80">
+                                                                <x-cards.team-member :name="$member->name" :role="$member->text('role')"
+                                                                                     :photoUrl="$member->photoUrl" :bio="$member->text('bio')" />
+                                                            </x-reveal>
                         @endforeach
                     </div>
                 </x-container>

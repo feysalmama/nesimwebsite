@@ -3,7 +3,7 @@
 @section('title', __('nav.testimonials'))
 
 @section('content')
-    {{-- app/[locale]/testimonials/page.tsx --}}
+
     <x-page-grid :eyebrow="__('testimonials.eyebrow')" :title="__('testimonials.title')"
                  :subtitle="__('testimonials.subtitle')" :count="$testimonials->count()"
                  empty="Testimonials will appear here once added in the CMS.">

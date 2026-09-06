@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
@@ -32,6 +33,8 @@ use Illuminate\Support\Facades\Hash;
  */
 class User extends Authenticatable
 {
+    use HasFactory;
+
     const CREATED_AT = 'createdAt';
 
     const UPDATED_AT = null;
@@ -109,7 +112,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Hash a new password for storage. Produces a $2y$ hash, which bcryptjs in
+     * Hash a new password fcd or storage. Produces a $2y$ hash, which bcryptjs in
      * the Next.js app also accepts, so both stacks stay interchangeable.
      */
     public function setPassword(string $plain): void
