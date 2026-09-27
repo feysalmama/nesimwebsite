@@ -17,4 +17,8 @@ require __DIR__.'/../vendor/autoload.php';
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
+// Keep uploads and built assets in the served directory, including when this
+// entry point is deployed to cPanel's public_html outside the application.
+$app->usePublicPath(__DIR__);
+
 $app->handleRequest(Request::capture());
