@@ -135,7 +135,7 @@ class UploadController extends Controller
     private function uploadError(UploadedFile $file): string
     {
         return match ($file->getError()) {
-            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'File too large (server limit)',
+            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'File too large. The server upload limit is '.ini_get('upload_max_filesize').'. Please choose a smaller file.',
             UPLOAD_ERR_PARTIAL => 'Upload was interrupted, please retry',
             UPLOAD_ERR_NO_FILE => 'No file provided',
             UPLOAD_ERR_NO_TMP_DIR, UPLOAD_ERR_CANT_WRITE => 'Server could not write the upload',

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Admin\Specs\ActivityLogSpec;
 use App\Livewire\Admin\ActivityLogs;
 use App\Livewire\Admin\MediaLibrary;
 use App\Livewire\Admin\ResourceManager;
@@ -23,6 +24,7 @@ use App\Models\User;
 use App\Models\VolunteerApplication;
 use App\Support\AdminNav;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
@@ -45,6 +47,35 @@ use Tests\TestCase;
 class AdminPanelTest extends TestCase
 {
     use DatabaseTransactions;
+
+    public function test_uploaded_image_can_be_saved_to_a_hero_slide(): void
+    {
+        $this->actingAs($this->staff());
+        $file = UploadedFile::fake()->image('hero.png');
+        $response = $this->postJson('/admin/upload', ['file' => $file])->assertOk();
+        $url = $response->json('url');
+        $path = public_path($url);
+
+        try {
+            $this->assertFileExists($path);
+            $this->assertSame('image/png', mime_content_type($path));
+            $this->assertDatabaseHas('media', ['url' => $url, 'mimeType' => 'image/png']);
+
+            Livewire::test(ResourceManager::class, ['resource' => 'hero-slides'])
+                ->call('openCreate')
+                ->set('form.title.en', 'Uploaded hero')
+                ->call('setMediaUrl', 'imageUrl', $url)
+                ->call('save')
+                ->assertHasNoErrors();
+
+            $this->assertDatabaseHas('heroslide', ['imageUrl' => $url, 'active' => true]);
+            $this->get('/en')->assertSee($url, false);
+        } finally {
+            if (is_file($path)) {
+                unlink($path);
+            }
+        }
+    }
 
     /* ── Every route ──────────────────────────────────────────────────────── */
 
@@ -629,11 +660,11 @@ class AdminPanelTest extends TestCase
          * every module, so asserting on "Partner" would pass or fail on data
          * this test did not write.
          */
-        $kept = \App\Models\ActivityLog::create([
+        $kept = ActivityLog::create([
             'action' => 'create', 'entity' => 'Zzalpha', 'entityId' => 'zz-alpha-id',
         ]);
 
-        \App\Models\ActivityLog::create([
+        ActivityLog::create([
             'action' => 'delete', 'entity' => 'Zzbeta', 'entityId' => 'zz-beta-id',
         ]);
 
@@ -666,18 +697,18 @@ class AdminPanelTest extends TestCase
     {
         $this->actingAs($this->staff());
 
-        $spec = new \App\Admin\Specs\ActivityLogSpec;
+        $spec = new ActivityLogSpec;
 
         // Empty, not null: null would inherit readRoles() and let the two
         // content roles write to the log through the component.
         $this->assertSame([], $spec->writeRoles());
 
-        $before = \App\Models\ActivityLog::query()->count();
+        $before = ActivityLog::query()->count();
 
         Livewire::test(ActivityLogs::class, ['resource' => 'activity-logs'])
             ->set('entity', 'Zzgamma');
 
-        $this->assertSame($before, \App\Models\ActivityLog::query()->count());
+        $this->assertSame($before, ActivityLog::query()->count());
     }
 
     /* ── Staff Users ──────────────────────────────────────────────────────── */

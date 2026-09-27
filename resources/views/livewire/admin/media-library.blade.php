@@ -298,7 +298,7 @@
                         succeeded += 1;
                     } else {
                         failed += 1;
-                        reason = data?.error || `HTTP ${response.status}`;
+                        reason = data?.error || data?.message || `HTTP ${response.status}`;
                     }
                 } catch {
                     failed += 1;

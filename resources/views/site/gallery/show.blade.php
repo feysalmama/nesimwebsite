@@ -29,6 +29,11 @@
                 <p class="mt-2 text-sm font-medium text-leaf">{{ format_date($gallery->eventDate) }}</p>
             @endif
 
+            @if ($gallery->coverImage)
+                <img src="{{ $gallery->coverImage }}" alt="{{ $gallery->text('title') }}"
+                     class="mt-8 max-h-[500px] w-full rounded-2xl object-cover">
+            @endif
+
             <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($gallery->images as $image)
                     <div class="group relative aspect-square overflow-hidden rounded-2xl bg-canopy">
@@ -39,7 +44,7 @@
                 @endforeach
             </div>
 
-            @if ($gallery->images->isEmpty())
+            @if ($gallery->images->isEmpty() && ! $gallery->coverImage)
                 <p class="mt-8 text-center text-sm text-stone">No images in this gallery yet.</p>
             @endif
         </x-container>

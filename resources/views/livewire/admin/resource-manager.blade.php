@@ -310,7 +310,7 @@
                 const data = await response.json().catch(() => null);
 
                 if (! response.ok || ! data || ! data.url) {
-                    await $wire.uploadFailed(data?.error || `Upload failed (HTTP ${response.status}).`);
+                    await $wire.uploadFailed(data?.error || data?.message || `Upload failed (HTTP ${response.status}).`);
 
                     return;
                 }

@@ -152,7 +152,7 @@
                 <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach ($programs as $program)
                         <x-cards.program :title="$program->text('title')" :summary="$program->text('summary')"
-                                         :icon="$program->icon" />
+                                         :icon="$program->icon" :imageUrl="$program->imageUrl" />
                     @endforeach
                     @foreach ($placeholderPrograms as $placeholder)
                         <x-cards.program :title="$placeholder['title']" :summary="$placeholder['summary']"

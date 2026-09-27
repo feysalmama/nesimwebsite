@@ -21,9 +21,8 @@
     @php($current = collect($slides)->first())
     <section class="relative h-[85vh] min-h-[500px] w-full overflow-hidden" data-hero-slider>
         @foreach ($slides as $slide)
-            <div class="absolute inset-0 transition-opacity duration-1000"
-                 data-hero-slide
-                 @class(['pointer-events-none opacity-0' => ! $loop->first])>
+            <div data-hero-slide
+                 @class(['absolute inset-0 transition-opacity duration-1000', 'pointer-events-none opacity-0' => ! $loop->first])>
                 <img src="{{ $slide->imageUrl }}" alt="{{ $slide->text('title') }}"
                      class="absolute inset-0 h-full w-full object-cover"
                      @if ($loop->first) fetchpriority="high" @else loading="lazy" @endif>
@@ -37,13 +36,12 @@
                     <h1 class="text-balance font-display text-4xl font-semibold leading-[1.08] text-white sm:text-5xl lg:text-[3.4rem]" data-hero-title>
                         {{ $current->text('title') }}
                     </h1>
-                    <p class="mt-5 text-[15.5px] leading-relaxed text-white/85" data-hero-subtitle
-                       @class(['hidden' => ! $current->text('subtitle')])>
+                    <p data-hero-subtitle
+                       @class(['mt-5 text-[15.5px] leading-relaxed text-white/85', 'hidden' => ! $current->text('subtitle')])>
                         {{ $current->text('subtitle') }}
                     </p>
                     <a href="{{ $current->buttonUrl }}" data-hero-button
-                       class="mt-8 inline-block rounded-full bg-sun px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sunlight"
-                       @class(['hidden' => ! ($current->buttonText && $current->buttonUrl)])>
+                       @class(['mt-8 inline-block rounded-full bg-sun px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sunlight', 'hidden' => ! ($current->text('buttonText') && $current->buttonUrl)])>
                         {{ $current->text('buttonText') }}
                     </a>
                 </div>
