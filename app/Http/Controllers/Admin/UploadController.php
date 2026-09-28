@@ -17,18 +17,15 @@ use Illuminate\Support\Str;
  * This is also where the port structurally removes the bug that made uploads
  * appear broken in the Next.js app. There, files were written into public/ at
  * runtime but Next.js serves public/ from a manifest built at compile time, so a
- * fresh upload 404'd until the next build. Here the file lands in the document
- * root and PHP hands it back on the very next request — no build step exists to
- * go stale.
+ * fresh upload 404'd until the next build.
  *
- * Files are written directly to public/uploads rather than through the "public"
- * disk (which resolves to storage/app/public), because that is where every
- * existing Media row's url already points.
- *
- * That directory used to be a junction onto the Next.js app's public/uploads so
- * both stacks shared one folder. It is a real directory now, holding its own
- * verified copy of the same 71 files - see storage/framework/adopt-uploads.ps1 -
- * so this app no longer reaches outside itself for its images.
+ * Files normally land in public/uploads, where the web server can serve them
+ * directly and where every existing Media row's url already points. cPanel can
+ * separate the application from public_html or restrict the served directory,
+ * so an unwritable public/uploads falls back to storage/app/public/uploads.
+ * Site\UploadFileController answers the same stable /uploads/<name> URL from
+ * either location, keeping database values, admin validation and the public site
+ * unchanged.
  */
 class UploadController extends Controller
 {
@@ -64,9 +61,9 @@ class UploadController extends Controller
             return response()->json(['error' => 'File too large (25MB max)'], 400);
         }
 
-        $directory = public_path('uploads');
+        $directory = $this->uploadDirectory();
 
-        if (! is_dir($directory) && ! @mkdir($directory, 0775, true) && ! is_dir($directory)) {
+        if ($directory === null) {
             return response()->json(['error' => 'Upload directory is not writable'], 500);
         }
 
@@ -87,7 +84,16 @@ class UploadController extends Controller
             return response()->json(['error' => 'Invalid filename'], 400);
         }
 
-        $file->move($directory, $filename);
+        try {
+            $file->move($directory, $filename);
+        } catch (\Throwable $e) {
+            Log::error('[upload] could not move the uploaded file', [
+                'directory' => $directory,
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json(['error' => 'Upload directory is not writable'], 500);
+        }
 
         $url = '/uploads/'.$filename;
 
@@ -111,6 +117,19 @@ class UploadController extends Controller
         }
 
         return response()->json(['url' => $url]);
+    }
+
+    private function uploadDirectory(): ?string
+    {
+        foreach ([public_path('uploads'), storage_path('app/public/uploads')] as $directory) {
+            if ((! is_dir($directory) && ! @mkdir($directory, 0775, true) && ! is_dir($directory)) || ! is_writable($directory)) {
+                continue;
+            }
+
+            return $directory;
+        }
+
+        return null;
     }
 
     /**

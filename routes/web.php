@@ -22,6 +22,7 @@ use App\Http\Controllers\Site\RegisterController;
 use App\Http\Controllers\Site\ResourceController;
 use App\Http\Controllers\Site\ServiceController;
 use App\Http\Controllers\Site\TestimonialController;
+use App\Http\Controllers\Site\UploadFileController;
 use App\Http\Controllers\Site\VolunteerController;
 use App\Support\AdminNav;
 use App\Support\LocaleText;
@@ -142,6 +143,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             ->name('resource');
     });
 });
+
+Route::get('/uploads/{filename}', UploadFileController::class)
+    ->where('filename', '[A-Za-z0-9._-]+')
+    ->name('uploads.show');
 
 /*
 | An unprefixed public path (/about, /programs, ...) is redirected into the
